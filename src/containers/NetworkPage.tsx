@@ -250,6 +250,12 @@ export const NetworkPage: React.FC = (prop) => {
         setNetworks((prevNetworks) => [...prevNetworks, newNetwork]);
     };
 
+    const removeNetwork = (name: string) => {
+        setNetworks((prevNetworks) =>
+            prevNetworks.filter((network) => network.name !== name)
+        );
+    };
+
     const sortNetworksByStrength = () => {
         setNetworks((prevNetworks) =>
             [...prevNetworks].sort((a, b) => b.strength - a.strength)
@@ -335,6 +341,7 @@ export const NetworkPage: React.FC = (prop) => {
             <ComfirmModal
                 isOpen={open}
                 onClose={handleClose}
+                removeNetwork={removeNetwork}
                 type={type}
                 networkName={networkName}
             ></ComfirmModal>

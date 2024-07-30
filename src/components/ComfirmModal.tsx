@@ -3,6 +3,7 @@ import styled from "styled-components";
 interface ModalProps {
     isOpen: any;
     onClose: any;
+    removeNetwork: any;
     type?: string;
     networkName?: string;
 }
@@ -62,11 +63,20 @@ const BoldText = styled.span`
 const ComfirmModal: React.FC<ModalProps> = ({
     isOpen,
     onClose,
+    removeNetwork,
     type,
     networkName,
 }) => {
     if (!isOpen) return null;
 
+    const handleAction = () => {
+        if (type === "Remove") {
+            removeNetwork(networkName);
+            onClose();
+        } else if (type === "Connect to") {
+            // Implement logic for connecting a network
+        }
+    };
     return (
         <ModalBackground>
             <ModalContainer>
@@ -79,7 +89,9 @@ const ComfirmModal: React.FC<ModalProps> = ({
                         <ModalFooterButtons onClick={onClose}>
                             No
                         </ModalFooterButtons>
-                        <ModalFooterButtons>Yes</ModalFooterButtons>
+                        <ModalFooterButtons onClick={handleAction}>
+                            Yes
+                        </ModalFooterButtons>
                     </ModalFooter>
                 </ModalContent>
             </ModalContainer>
