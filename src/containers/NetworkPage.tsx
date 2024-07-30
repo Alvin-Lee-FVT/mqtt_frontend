@@ -1,6 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { FvtLogo } from "../assets/FvtLogo";
+import { Wifi } from "../assets/Wifi";
+import { NoWifi } from "../assets/NoWifi";
+import Delete from "../assets/delete.svg";
+import Edit from "../assets/edit.svg";
+
+import ComfirmModal from "../components/ComfirmModal";
+import EditModal from "../components/EditModal";
+import AddNetworkModal from "../components/AddNetworkModal";
 
 // Define keyframes for fade-in animation
 const fadeInAnimation = keyframes`
@@ -18,7 +26,7 @@ const verticalAnimation = keyframes`
     top: 120px;
   }
   to {
-    top: 50px;
+    top: 30px;
   }
 `;
 
@@ -30,16 +38,16 @@ const MainContainer = styled.div`
 `;
 
 const HeaderContainer = styled.div`
-    height: 170px;
+    height: 100px;
     padding: 8px;
     display: flex;
     padding-right: 50px;
-    justify-content: right;
+    padding-left: 50px;
+    justify-content: space-between;
 `;
 
 const LogoContainer = styled.div`
     position: absolute;
-    z-index: 1;
     width: 100%;
     animation: ${verticalAnimation} 1s ease-in-out forwards;
     justify-content: center;
@@ -55,14 +63,40 @@ const SystemInfo = styled.div`
     font-weight: 400;
     line-height: 20.4px;
 `;
+
+const BatteryInfo = styled.div`
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20.4px;
+    justify-content: center;
+    z-index: 2;
+`;
+
+const BatteryInfoTitle = styled.div`
+    margin-bottom: 12px;
+`;
+
+const SerialNum = styled.div`
+    display: flex;
+    font-size: 25px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+`;
+
 const TimeInfo = styled.div`
     margin-right: 16px;
+    margin-left: 16px;
 `;
 
 const MainPanel = styled.div`
     width: 100%;
     flex: 1;
-    padding: 16px;
+    padding: 30px 16px 60px 16px;
     align-items: stretch;
     display: flex;
     opacity: 0;
@@ -74,6 +108,9 @@ const NetworkContainer = styled.div`
     flex: 0.5;
     border-radius: 65px;
     box-shadow: rgba(0, 0, 0, 0.22) 1px 11px 20px 7px;
+    background-color: #404040;
+    display: flex;
+    flex-direction: column;
 `;
 
 const ListTitle = styled.div`
@@ -86,19 +123,166 @@ const ListTitle = styled.div`
     border-top-right-radius: 20px;
 `;
 
+const AddNetworkContainer = styled.div`
+    display: flex;
+    border-bottom-left-radius: 65px;
+    border-bottom-right-radius: 65px;
+    margin: auto;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+`;
+
 const ListItem = styled.div`
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-left: 100px;
-    padding-right: 100px;
-
-    font-size: 30px;
+    padding-left: 50px;
+    padding-right: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
     color: black;
-    background: white;
-    opacity: 0.5;
+    height: 60px;
+    &:nth-of-type(odd) {
+        background: #919191;
+    }
+    &:nth-of-type(even) {
+        background: #818181;
+    }
+`;
+
+const NetworkList = styled.div`
+    height: 560px;
+    overflow-y: auto; /* Only vertical scrolling */
+    background-color: #656363;
+`;
+
+const NetworkInfoContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const NetworkActionContainer = styled.div`
+    display: flex;
+`;
+
+const NetworkName = styled.div<{ strength: number }>`
+    margin-left: 15px;
+    cursor: context-menu;
+    opacity: ${(props) => (props.strength > 0 ? 1 : 0.3)};
+`;
+
+const ConnectButton = styled.button<{ strength: number }>`
+    background-color: #444444;
+    border-width: 2.3px;
+    border-color: #000000;
+    box-shadow: inset 0px -2px 0px 0px #333333;
+    border-radius: 0.25rem;
+    width: 120px;
+    display: flex;
+    cursor: pointer;
+    opacity: ${(props) => (props.strength > 0 ? 1 : 0.3)};
+    cursor: ${(props) => (props.strength > 0 ? "pointer" : "not-allowed")};
+`;
+
+const AddNetworkButton = styled.button`
+    background-color: #5b5b5b;
+    border-width: 2.3px;
+    border-color: #000000;
+    box-shadow: inset 0px -2px 0px 0px #333333;
+    border-radius: 0.25rem;
+    width: 180px;
+    display: flex;
+    cursor: pointer;
+    height: 50%;
+`;
+
+const ButtonText = styled.div`
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 16px;
+    color: #ffffff;
+    margin: auto;
+`;
+
+const DeleteButton = styled.button<{ strength: number }>`
+    border-width: 2.3px;
+    border-color: #000000;
+    box-shadow: inset 0px 0px 0px 0px #333333;
+    border-radius: 1rem;
+    margin-left: 45px;
+    width: 50px;
+    background: url(${Delete}) #696969 no-repeat center;
+    opacity: ${(props) => (props.strength > 0 ? 1 : 0.3)};
+    cursor: ${(props) => (props.strength > 0 ? "pointer" : "not-allowed")};
+`;
+
+const EditButton = styled.button`
+    padding: 12px;
+    width: 40px;
+    height: 40px;
+    background: url(${Edit}) no-repeat center;
 `;
 
 export const NetworkPage: React.FC = (prop) => {
+    const [open, setOpen] = React.useState(false);
+    const [editOpen, setEditOpen] = React.useState(false);
+    const [addNetwork, setAddNetwork] = React.useState(false);
+
+    const [type, setType] = React.useState("");
+    const [networkName, setNetworkName] = React.useState("");
+
+    const [networks, setNetworks] = useState([
+        { name: "TELUS86523-5G", strength: 3 },
+        { name: "TELUS42141", strength: 3 },
+        { name: "TELUS73425-2.4G", strength: 3 },
+        { name: "TELUS16643", strength: 2 },
+        { name: "TELUS92353", strength: 2 },
+        { name: "TELUS92456-2.4G", strength: 2 },
+        { name: "TELUS23116", strength: 1 },
+        { name: "TELUS38234-5G", strength: 1 },
+        { name: "TELUS38234-5G", strength: 1 },
+        { name: "TELUS38234-5G", strength: 0 },
+        { name: "TELUS38234-5G", strength: 0 },
+    ]);
+
+    const addNewNetwork = (newNetwork: any) => {
+        setNetworks((prevNetworks) => [...prevNetworks, newNetwork]);
+    };
+
+    const sortNetworksByStrength = () => {
+        setNetworks((prevNetworks) =>
+            [...prevNetworks].sort((a, b) => b.strength - a.strength)
+        );
+    };
+
+    useEffect(() => {
+        sortNetworksByStrength();
+    }, [networks]);
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleEditClose = () => {
+        setEditOpen(false);
+    };
+
+    const handleEditOpen = () => {
+        setEditOpen(true);
+    };
+
+    const handleAddNetworkClose = () => {
+        setAddNetwork(false);
+    };
+
+    const handleAddNetworkOpen = () => {
+        setAddNetwork(true);
+    };
+
     const daysOfWeek = [
         "Sunday",
         "Monday",
@@ -148,12 +332,37 @@ export const NetworkPage: React.FC = (prop) => {
 
     return (
         <MainContainer>
+            <ComfirmModal
+                isOpen={open}
+                onClose={handleClose}
+                type={type}
+                networkName={networkName}
+            ></ComfirmModal>
+            <EditModal isOpen={editOpen} onClose={handleEditClose}></EditModal>
+            <AddNetworkModal
+                isOpen={addNetwork}
+                onClose={handleAddNetworkClose}
+                addNetwork={addNewNetwork}
+            ></AddNetworkModal>
+
             <LogoContainer>
                 <FvtLogo />
             </LogoContainer>
             {/* Header information: service menu button, logo, time date */}
             <HeaderContainer>
+                <BatteryInfo>
+                    <BatteryInfoTitle>Battery Serial No.</BatteryInfoTitle>
+                    <div className="flex">
+                        <SerialNum>789495189561991</SerialNum>
+                        <EditButton
+                            onClick={() => {
+                                handleEditOpen();
+                            }}
+                        ></EditButton>
+                    </div>
+                </BatteryInfo>
                 <SystemInfo>
+                    <Wifi fill="white" strength={2}></Wifi>
                     <TimeInfo>
                         {currentDate} &nbsp; {currentTime}
                     </TimeInfo>
@@ -162,10 +371,59 @@ export const NetworkPage: React.FC = (prop) => {
             <MainPanel>
                 <NetworkContainer>
                     <ListTitle>Network</ListTitle>
-                    <ListItem>
-                        <div>TELUS XXXXX</div>
-                        <div>test</div>
-                    </ListItem>
+                    <NetworkList>
+                        {networks.map((item, index) => (
+                            <ListItem>
+                                <NetworkInfoContainer>
+                                    {item.strength > 0 && (
+                                        <Wifi
+                                            fill="black"
+                                            strength={item.strength}
+                                        ></Wifi>
+                                    )}
+                                    {item.strength === 0 && (
+                                        <NoWifi
+                                            strength={item.strength}
+                                        ></NoWifi>
+                                    )}
+                                    <NetworkName strength={item.strength}>
+                                        {item.name}
+                                    </NetworkName>
+                                </NetworkInfoContainer>
+                                <NetworkActionContainer>
+                                    <ConnectButton
+                                        onClick={() => {
+                                            handleOpen();
+                                            setType("Connect to");
+                                            setNetworkName(item.name);
+                                        }}
+                                        strength={item.strength}
+                                        disabled={item.strength === 0}
+                                    >
+                                        <ButtonText>Connect</ButtonText>
+                                    </ConnectButton>
+                                    <DeleteButton
+                                        onClick={() => {
+                                            handleOpen();
+                                            setType("Remove");
+                                            setNetworkName(item.name);
+                                        }}
+                                        strength={item.strength}
+                                        disabled={item.strength === 0}
+                                    ></DeleteButton>
+                                </NetworkActionContainer>
+                            </ListItem>
+                        ))}
+                    </NetworkList>
+                    <AddNetworkContainer>
+                        <AddNetworkButton
+                            onClick={() => {
+                                handleAddNetworkOpen();
+                            }}
+                        >
+                            <ButtonText>Add Network</ButtonText>
+                        </AddNetworkButton>
+                    </AddNetworkContainer>
                 </NetworkContainer>
             </MainPanel>
         </MainContainer>
