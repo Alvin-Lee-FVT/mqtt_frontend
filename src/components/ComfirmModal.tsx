@@ -22,7 +22,7 @@ const ModalContainer = styled.div`
     padding-left: 10px;
     padding-right: 10px;
     height: 30%;
-    width: 35%;
+    width: 50%;
     margin: auto;
     border: 2px solid black;
     border-radius: 10px;
@@ -58,6 +58,7 @@ const ModalFooterButtons = styled.div`
 `;
 
 const BoldText = styled.span`
+    text-wrap: nowrap;
     font-weight: bold;
 `;
 const ComfirmModal: React.FC<ModalProps> = ({

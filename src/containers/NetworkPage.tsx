@@ -225,6 +225,10 @@ const EditButton = styled.button`
 `;
 
 export const NetworkPage: React.FC = (prop) => {
+    const [userInfo, setUserInfo] = React.useState({
+        batterySerial: 789495189561991,
+    });
+
     const [open, setOpen] = React.useState(false);
     const [editOpen, setEditOpen] = React.useState(false);
     const [addNetwork, setAddNetwork] = React.useState(false);
@@ -326,7 +330,6 @@ export const NetworkPage: React.FC = (prop) => {
             hours = hours ? hours : "12"; // The hour '0' should be '12'
 
             const minutes = String(now.getMinutes()).padStart(2, "0");
-            const seconds = String(now.getSeconds()).padStart(2, "0");
             setCurrentTime(`${hours}:${minutes} ${ampm}`);
         };
 
@@ -345,7 +348,12 @@ export const NetworkPage: React.FC = (prop) => {
                 type={type}
                 networkName={networkName}
             ></ComfirmModal>
-            <EditModal isOpen={editOpen} onClose={handleEditClose}></EditModal>
+            <EditModal
+                isOpen={editOpen}
+                onClose={handleEditClose}
+                userInfo={userInfo}
+                updateUserInfo={setUserInfo}
+            ></EditModal>
             <AddNetworkModal
                 isOpen={addNetwork}
                 onClose={handleAddNetworkClose}
@@ -360,7 +368,7 @@ export const NetworkPage: React.FC = (prop) => {
                 <BatteryInfo>
                     <BatteryInfoTitle>Battery Serial No.</BatteryInfoTitle>
                     <div className="flex">
-                        <SerialNum>789495189561991</SerialNum>
+                        <SerialNum>{userInfo.batterySerial}</SerialNum>
                         <EditButton
                             onClick={() => {
                                 handleEditOpen();

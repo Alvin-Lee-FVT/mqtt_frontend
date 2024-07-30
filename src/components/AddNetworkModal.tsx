@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 interface ModalProps {
     isOpen: any;
@@ -59,12 +59,6 @@ const InputPanel = styled.div`
     align-items: center;
 `;
 
-const InputGroup = styled.div`
-    display: flex;
-    width: 80%;
-    justify-content: space-between;
-`;
-
 const ModalFooter = styled.div`
     display: flex;
     justify-content: space-around;
@@ -85,22 +79,25 @@ const BoldText = styled.span`
     font-weight: bold;
 `;
 
-const Divider = styled.div`
-    width: 100%;
-    height: 7px;
-    background-color: #4b4b4b;
-    margin-bottom: 25px;
-`;
 const AddNetworkModal: React.FC<ModalProps> = ({
     isOpen,
     onClose,
     addNetwork,
 }) => {
+    const [ssid, setSsid] = useState("");
+
+    const handleChange = (event: any) => {
+        setSsid(event.target.value);
+    };
+
     if (!isOpen) return null;
+
     const handleAdd = () => {
-        addNetwork({ name: "xxxxxxxx", strength: 3 });
+        addNetwork({ name: ssid, strength: 3 });
+        setSsid("");
         onClose();
     };
+
     return (
         <ModalBackground>
             <ModalContainer>
@@ -116,8 +113,10 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                             <input
                                 type="text"
                                 id="input"
+                                value={ssid}
+                                onChange={handleChange}
                                 className="Input-text"
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="Network SSID"
                             ></input>
                         </InputContainer>
                         <InputContainer>
@@ -128,7 +127,7 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="Password"
                             ></input>
                         </InputContainer>
                     </InputPanel>

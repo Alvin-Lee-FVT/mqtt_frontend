@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 interface ModalProps {
     isOpen: any;
     onClose: any;
-    type?: string;
-    networkName?: string;
+    userInfo: any;
+    updateUserInfo: any;
 }
 
 const ModalBackground = styled.div`
@@ -22,10 +22,9 @@ const ModalContainer = styled.div`
     width: 35%;
     margin: auto;
     padding: 35px 15px 50px;
-    border: 2px solid rgb(0; 0; 0);
-    borderradius: 10px;
+    border: 2px solid rgb(0 0 0);
+    border-radius: 10px;
     display: flex;
-    justifycontent: center;
 `;
 
 const ModalText = styled.div`
@@ -96,15 +95,36 @@ const Divider = styled.div`
 const EditModal: React.FC<ModalProps> = ({
     isOpen,
     onClose,
-    type,
-    networkName,
+    userInfo,
+    updateUserInfo,
 }) => {
+    let [mqttConfig, setMqttConfig] = useState({
+        batterySerial: userInfo.batterySerial,
+    });
+
+    const handleChange = (event: any) => {
+        const { name, value } = event.target;
+        setMqttConfig((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
+    };
+
+    const handleClose = () => {
+        setMqttConfig(userInfo);
+        onClose();
+    };
+
+    const handleUpdate = () => {
+        updateUserInfo(mqttConfig);
+        onClose();
+    };
+
     if (!isOpen) return null;
 
     return (
         <ModalBackground>
-            <ModalContainer
-            >
+            <ModalContainer>
                 <ModalContent>
                     <ModalText>
                         <BoldText>MQTT configuration</BoldText>
@@ -117,8 +137,11 @@ const EditModal: React.FC<ModalProps> = ({
                             <input
                                 type="text"
                                 id="input"
+                                name="batterySerial"
                                 className="Input-text"
+                                onChange={handleChange}
                                 placeholder="xxxxxxxxxxxxxxxxxxx"
+                                value={mqttConfig.batterySerial}
                             ></input>
                         </InputContainer>
                         <Divider></Divider>
@@ -183,10 +206,12 @@ const EditModal: React.FC<ModalProps> = ({
                     </InputPanel>
 
                     <ModalFooter>
-                        <ModalFooterButtons onClick={onClose}>
+                        <ModalFooterButtons onClick={handleClose}>
                             Cancel
                         </ModalFooterButtons>
-                        <ModalFooterButtons>Update</ModalFooterButtons>
+                        <ModalFooterButtons onClick={handleUpdate}>
+                            Update
+                        </ModalFooterButtons>
                     </ModalFooter>
                 </ModalContent>
             </ModalContainer>
