@@ -207,7 +207,7 @@ const ButtonText = styled.div`
     margin: auto;
 `;
 
-const DeleteButton = styled.button<{ strength: number }>`
+const DeleteButton = styled.button`
     border-width: 2.3px;
     border-color: #000000;
     box-shadow: inset 0px 0px 0px 0px #333333;
@@ -215,8 +215,6 @@ const DeleteButton = styled.button<{ strength: number }>`
     margin-left: 45px;
     width: 50px;
     background: url(${Delete}) #696969 no-repeat center;
-    opacity: ${(props) => (props.strength > 0 ? 1 : 0.3)};
-    cursor: ${(props) => (props.strength > 0 ? "pointer" : "not-allowed")};
 `;
 
 const EditButton = styled.button`
@@ -425,8 +423,6 @@ export const NetworkPage: React.FC = (prop) => {
                                             setType("Remove");
                                             setNetworkName(item.name);
                                         }}
-                                        strength={item.strength}
-                                        disabled={item.strength === 0}
                                     ></DeleteButton>
                                 </NetworkActionContainer>
                             </ListItem>

@@ -158,7 +158,7 @@ export const Login: React.FC = (prop) => {
                     </InputField>
                     <Button onClick={signIn}>Log In</Button>
                 </InputContainer>
-                <ContactLink onClick={handleOpen}>contact us</ContactLink>
+                <ContactLink onClick={handleOpen}>Contact Us</ContactLink>
             </LoginContainer>
         </MainContainer>
     );
