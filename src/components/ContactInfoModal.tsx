@@ -3,9 +3,6 @@ import styled from "styled-components";
 interface ModalProps {
     isOpen: any;
     onClose: any;
-    removeNetwork: any;
-    type?: string;
-    networkName?: string;
 }
 
 const ModalBackground = styled.div`
@@ -32,7 +29,9 @@ const ModalContainer = styled.div`
 
 const ModalText = styled.div`
     font-size: 30px;
-    margin-bottom: 55px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
 `;
 
 const ModalContent = styled.div`
@@ -57,41 +56,32 @@ const ModalFooterButtons = styled.div`
     font-size: 28px;
 `;
 
-const BoldText = styled.span`
+const InfoTitle = styled.span`
     text-wrap: nowrap;
     font-weight: bold;
+    color: black;
 `;
-const ComfirmModal: React.FC<ModalProps> = ({
-    isOpen,
-    onClose,
-    removeNetwork,
-    type,
-    networkName,
-}) => {
+const InfoText = styled.span`
+    text-wrap: nowrap;
+    color: #494949;
+    margin-bottom: 25px;
+`;
+const ContactInfoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
-    const handleAction = () => {
-        if (type === "Remove") {
-            removeNetwork(networkName);
-            onClose();
-        } else if (type === "Connect to") {
-            // Implement logic for connecting a network
-        }
-    };
     return (
         <ModalBackground>
             <ModalContainer>
                 <ModalContent>
                     <ModalText>
-                        Do you want to <BoldText>{type}</BoldText> the network
-                        <BoldText> {networkName}</BoldText>?
+                        <InfoTitle>PHONE</InfoTitle>
+                        <InfoText>+1 778-000-0000</InfoText>
+                        <InfoTitle>E-MAIL</InfoTitle>
+                        <InfoText>Epiroc@epiroc.com</InfoText>
                     </ModalText>
                     <ModalFooter>
                         <ModalFooterButtons onClick={onClose}>
-                            No
-                        </ModalFooterButtons>
-                        <ModalFooterButtons onClick={handleAction}>
-                            Yes
+                            Ok
                         </ModalFooterButtons>
                     </ModalFooter>
                 </ModalContent>
@@ -100,4 +90,4 @@ const ComfirmModal: React.FC<ModalProps> = ({
     );
 };
 
-export default ComfirmModal;
+export default ContactInfoModal;

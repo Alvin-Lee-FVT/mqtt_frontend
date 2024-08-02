@@ -95,6 +95,7 @@ const TimeInfo = styled.div`
 
 const MainPanel = styled.div`
     width: 100%;
+    height: 50%;
     flex: 1;
     padding: 30px 16px 60px 16px;
     align-items: stretch;
@@ -116,7 +117,7 @@ const NetworkContainer = styled.div`
 const ListTitle = styled.div`
     padding-top: 15px;
     padding-bottom: 15px;
-    font-size: 40px;
+    font-size: 25px;
     color: white;
     background: #404040;
     border-top-left-radius: 20px;
@@ -125,6 +126,7 @@ const ListTitle = styled.div`
 
 const AddNetworkContainer = styled.div`
     display: flex;
+    height: 10%;
     border-bottom-left-radius: 65px;
     border-bottom-right-radius: 65px;
     margin: auto;
@@ -152,7 +154,7 @@ const ListItem = styled.div`
 `;
 
 const NetworkList = styled.div`
-    height: 560px;
+    height: 80%;
     overflow-y: auto; /* Only vertical scrolling */
     background-color: #656363;
 `;

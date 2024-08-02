@@ -3,6 +3,8 @@ import styled, { keyframes, ThemeContext } from "styled-components";
 import { FvtLogo } from "../assets/FvtLogo";
 import { useNavigate } from "react-router-dom";
 
+import ContactInfoMoadl from "../components/ContactInfoModal";
+
 // Define the keyframes for the animation
 const fadeIn = keyframes`
   0% {
@@ -36,7 +38,7 @@ const MainContainer = styled.div`
 
 const LoginContainer = styled.div`
     width: 700px;
-    height: 460px;
+    height: 500px;
     border-radius: 65px;
     box-shadow: rgba(0, 0, 0, 0.22) 1px 11px 20px 7px;
 `;
@@ -57,7 +59,7 @@ const InputContainer = styled.form`
 `;
 
 const InputField = styled.div`
-    margin-bottom: 2rem;
+    margin-bottom: 1.2rem;
 `;
 
 const InputLabel = styled.label`
@@ -87,6 +89,11 @@ const Input = styled.input`
     }
 `;
 
+const ContactLink = styled.span`
+    cursor: pointer;
+    text-decoration: underline;
+`;
+
 const Button = styled.button`
     font-weight: 600;
     padding-top: 0.5rem;
@@ -97,6 +104,7 @@ const Button = styled.button`
     cursor: pointer;
     border-radius: 0.25rem;
     transition: 1s;
+    margin-bottom: 25px;
     &:hover {
         background-color: white;
         opacity: 0.5;
@@ -104,6 +112,16 @@ const Button = styled.button`
     }
 `;
 export const Login: React.FC = (prop) => {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
     const navigate = useNavigate();
 
     const signIn = () => {
@@ -112,6 +130,10 @@ export const Login: React.FC = (prop) => {
 
     return (
         <MainContainer>
+            <ContactInfoMoadl
+                isOpen={open}
+                onClose={handleClose}
+            ></ContactInfoMoadl>
             <LoginContainer>
                 <LogoContainer>
                     <FvtLogo />
@@ -136,6 +158,7 @@ export const Login: React.FC = (prop) => {
                     </InputField>
                     <Button onClick={signIn}>Log In</Button>
                 </InputContainer>
+                <ContactLink onClick={handleOpen}>contact us</ContactLink>
             </LoginContainer>
         </MainContainer>
     );

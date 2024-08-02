@@ -32,6 +32,13 @@
     background: #555;
 }
 
+/* Example of removing the focus outline */
+input:focus {
+    outline: none;
+    /* Optional: add a custom focus style for better accessibility */
+    box-shadow: 0 0 15px rgb(102, 102, 102);
+  }
+
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -48,12 +55,12 @@ label {
 .Input-text {
     border: 3px solid #000;
     border-radius: 5px;
-    height: 50px;
+    height: 40px;
     text-align: center;
     line-height: normal;
     width: 100%;
     user-select: auto;
-    font-size: 16px;
+    font-size: 20px;
 }
 
 .opacity {
