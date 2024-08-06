@@ -4,6 +4,7 @@ interface ModalProps {
     isOpen: any;
     onClose: any;
     addNetwork: any;
+    networkList: any;
 }
 
 const ModalBackground = styled.div`
@@ -64,7 +65,7 @@ const ModalFooter = styled.div`
     justify-content: space-around;
 `;
 
-const ModalFooterButtons = styled.div`
+const ModalFooterButtons = styled.button`
     background-color: #797979;
     border-width: 2.3px;
     border-color: #000000;
@@ -73,6 +74,19 @@ const ModalFooterButtons = styled.div`
     width: 150px;
     cursor: pointer;
     font-size: 28px;
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+`;
+
+const InputLabel = styled.label`
+    font-size: 19px;
+    font-weight: bold;
+`;
+
+const WarnLabel = styled.p`
+    color: #910202;
 `;
 
 const BoldText = styled.span`
@@ -83,18 +97,49 @@ const AddNetworkModal: React.FC<ModalProps> = ({
     isOpen,
     onClose,
     addNetwork,
+    networkList,
 }) => {
     const [ssid, setSsid] = useState("");
+    const [password, setPassword] = useState("");
 
-    const handleChange = (event: any) => {
+    // Initially disabled the button
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [showWarnMessage, setShowWarnMessage] = useState(false);
+
+    // const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    const handleSsidChange = (event: any) => {
+        setShowWarnMessage(false);
         setSsid(event.target.value);
+        setIsButtonDisabled(event.target.value === "" || password === "");
+    };
+
+    const handlePasswordChange = (event: any) => {
+        setPassword(event.target.value);
+        setIsButtonDisabled(ssid === "" || event.target.value === "");
     };
 
     if (!isOpen) return null;
 
     const handleAdd = () => {
-        addNetwork({ name: ssid, strength: 3 });
+        const duplicateSsid = networkList.some(
+            (ele: { name: any }) => ele.name === ssid
+        );
+        if (!duplicateSsid) {
+            addNetwork({ name: ssid, strength: 3 });
+            setSsid("");
+            setPassword("");
+            onClose();
+        } else {
+            setShowWarnMessage(true);
+        }
+    };
+
+    const handleClose = () => {
+        setShowWarnMessage(false);
+        setIsButtonDisabled(true);
         setSsid("");
+        setPassword("");
         onClose();
     };
 
@@ -107,36 +152,42 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                     </ModalText>
                     <InputPanel>
                         <InputContainer>
-                            <label htmlFor="input" className="Input-label">
-                                SSID
-                            </label>
+                            <InputLabel>SSID</InputLabel>
                             <input
                                 type="text"
                                 id="input"
-                                value={ssid}
-                                onChange={handleChange}
+                                onChange={handleSsidChange}
                                 className="Input-text"
                                 placeholder="Network SSID"
+                                required
                             ></input>
+                            {showWarnMessage && (
+                                <WarnLabel>
+                                    -- (Network SSID already exist) --
+                                </WarnLabel>
+                            )}
                         </InputContainer>
                         <InputContainer>
-                            <label htmlFor="input" className="Input-label">
-                                Password
-                            </label>
+                            <InputLabel>Password</InputLabel>
                             <input
                                 type="text"
                                 id="input"
+                                onChange={handlePasswordChange}
                                 className="Input-text"
                                 placeholder="Password"
+                                required
                             ></input>
                         </InputContainer>
                     </InputPanel>
 
                     <ModalFooter>
-                        <ModalFooterButtons onClick={onClose}>
+                        <ModalFooterButtons onClick={handleClose}>
                             Cancel
                         </ModalFooterButtons>
-                        <ModalFooterButtons onClick={handleAdd}>
+                        <ModalFooterButtons
+                            onClick={handleAdd}
+                            disabled={isButtonDisabled}
+                        >
                             Add
                         </ModalFooterButtons>
                     </ModalFooter>

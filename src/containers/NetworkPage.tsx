@@ -244,10 +244,10 @@ export const NetworkPage: React.FC = (prop) => {
         { name: "TELUS92353", strength: 2 },
         { name: "TELUS92456-2.4G", strength: 2 },
         { name: "TELUS23116", strength: 1 },
-        { name: "TELUS38234-5G", strength: 1 },
-        { name: "TELUS38234-5G", strength: 1 },
-        { name: "TELUS38234-5G", strength: 0 },
-        { name: "TELUS38234-5G", strength: 0 },
+        { name: "TELUS382345-5G", strength: 1 },
+        { name: "TELUS382347-5G", strength: 1 },
+        { name: "TELUS382342-5G", strength: 0 },
+        { name: "TELUS382341-5G", strength: 0 },
     ]);
 
     const addNewNetwork = (newNetwork: any) => {
@@ -358,6 +358,7 @@ export const NetworkPage: React.FC = (prop) => {
                 isOpen={addNetwork}
                 onClose={handleAddNetworkClose}
                 addNetwork={addNewNetwork}
+                networkList={networks}
             ></AddNetworkModal>
 
             <LogoContainer>
