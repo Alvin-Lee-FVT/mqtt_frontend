@@ -1,8 +1,14 @@
 import "./App.css";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    Navigate,
+} from "react-router-dom";
 import { Loading } from "./containers/Loading";
 import { Login } from "./containers/Login";
 import { NetworkPage } from "./containers/NetworkPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
     return (
@@ -40,8 +46,13 @@ function App() {
             <div className="App">
                 <Routes>
                     <Route path="/" element={<Login />} />
-                    <Route path="/loading" element={<Loading />} />
-                    <Route path="/network" element={<NetworkPage />} />
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/network" element={<NetworkPage />} />
+                        <Route path="/loading" element={<Loading />} />
+                    </Route>
+                    {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
+
+                    {/* <Route path="/network" element={<NetworkPage />} /> */}
                 </Routes>
             </div>
         </Router>

@@ -174,8 +174,12 @@ const NetworkName = styled.div<{ strength: number }>`
     opacity: ${(props) => (props.strength > 0 ? 1 : 0.3)};
 `;
 
-const ConnectButton = styled.button<{ strength: number }>`
-    background-color: #444444;
+const ConnectButton = styled.button<{
+    strength: number;
+    activateNetwork: boolean;
+}>`
+    background-color: ${(props) =>
+        props.activateNetwork ? "#868686" : "#444444"};
     border-width: 2.3px;
     border-color: #000000;
     box-shadow: inset 0px -2px 0px 0px #333333;
@@ -199,11 +203,13 @@ const AddNetworkButton = styled.button`
     height: 50%;
 `;
 
-const ButtonText = styled.div`
+const ButtonText = styled.div<{
+    activateNetwork?: boolean;
+}>`
     font-weight: 700;
     font-size: 18px;
     line-height: 16px;
-    color: #ffffff;
+    color: ${(props) => (props.activateNetwork ? "black" : "#ffffff")};
     margin: auto;
 `;
 
@@ -235,6 +241,8 @@ export const NetworkPage: React.FC = (prop) => {
 
     const [type, setType] = React.useState("");
     const [networkName, setNetworkName] = React.useState("");
+    const [activeNetwork, setActiveNetworkName] =
+        React.useState("TELUS86523-5G");
 
     const [networks, setNetworks] = useState([
         { name: "TELUS86523-5G", strength: 3 },
@@ -291,6 +299,11 @@ export const NetworkPage: React.FC = (prop) => {
 
     const handleAddNetworkOpen = () => {
         setAddNetwork(true);
+    };
+
+    const handleDisconnect = () => {
+        // Logic to disconnect
+        console.log("Disconnected from the network");
     };
 
     const daysOfWeek = [
@@ -409,14 +422,28 @@ export const NetworkPage: React.FC = (prop) => {
                                 <NetworkActionContainer>
                                     <ConnectButton
                                         onClick={() => {
-                                            handleOpen();
-                                            setType("Connect to");
-                                            setNetworkName(item.name);
+                                            if (item.name === activeNetwork) {
+                                                // Function to disconnect
+                                                handleDisconnect();
+                                            } else {
+                                                // Function to connect
+                                                handleOpen();
+                                                setType("Connect to");
+                                                setNetworkName(item.name);
+                                            }
                                         }}
                                         strength={item.strength}
-                                        disabled={item.strength === 0}
+                                        activateNetwork={item.name === activeNetwork}
                                     >
-                                        <ButtonText>Connect</ButtonText>
+                                        <ButtonText
+                                            activateNetwork={
+                                                item.name === activeNetwork
+                                            }
+                                        >
+                                            {item.name === activeNetwork
+                                                ? "Disconnect"
+                                                : "Connect"}
+                                        </ButtonText>
                                     </ConnectButton>
                                     <DeleteButton
                                         onClick={() => {
@@ -424,6 +451,7 @@ export const NetworkPage: React.FC = (prop) => {
                                             setType("Remove");
                                             setNetworkName(item.name);
                                         }}
+                                        disabled={item.name === activeNetwork}
                                     ></DeleteButton>
                                 </NetworkActionContainer>
                             </ListItem>

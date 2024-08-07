@@ -1,7 +1,8 @@
 import React from "react";
-import styled, { keyframes, ThemeContext } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import { FvtLogo } from "../assets/FvtLogo";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthContext";
 
 import ContactInfoMoadl from "../components/ContactInfoModal";
 
@@ -71,6 +72,20 @@ const InputLabel = styled.label`
     margin-bottom: 0.5rem;
 `;
 
+const WarnMessage = styled.div<{ showWarn: boolean }>`
+    color: red;
+    opacity: ${(props) => (props.showWarn ? 1 : 0)};
+    visibility: ${(props) => (props.showWarn ? "visible" : "hidden")};
+    transition: visibility 0s linear
+            ${(props) => (props.showWarn ? "0s" : "1s")},
+        opacity 1s ease-in-out;
+    ${(props) =>
+        props.showWarn &&
+        css`
+            animation: ${fadeIn} 1s ease-in-out;
+        `}
+`;
+
 const Input = styled.input`
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -113,6 +128,12 @@ const Button = styled.button`
 `;
 export const Login: React.FC = (prop) => {
     const [open, setOpen] = React.useState(false);
+    const [username, setUsername] = React.useState("");
+    const [password, setPassword] = React.useState("");
+
+    const [showWarning, setShowWarning] = React.useState(false);
+
+    const { login } = useAuth();
 
     const handleClose = () => {
         setOpen(false);
@@ -126,6 +147,18 @@ export const Login: React.FC = (prop) => {
 
     const signIn = () => {
         navigate("/loading");
+    };
+
+    const handleLogin = (e: React.FormEvent) => {
+        e.preventDefault(); // Prevents the default form submission behavior
+
+        // Add authentication logic here
+        if (username === "user" && password === "pass") {
+            login();
+            navigate("/network");
+        } else {
+            setShowWarning(true);
+        }
     };
 
     return (
@@ -145,6 +178,11 @@ export const Login: React.FC = (prop) => {
                             id="username"
                             type="text"
                             placeholder="Username"
+                            value={username}
+                            onChange={(e) => {
+                                setUsername(e.target.value);
+                                setShowWarning(false);
+                            }}
                         ></Input>
                     </InputField>
 
@@ -154,9 +192,17 @@ export const Login: React.FC = (prop) => {
                             id="password"
                             type="password"
                             placeholder="******************"
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                setShowWarning(false);
+                            }}
                         ></Input>
+                        <WarnMessage showWarn={showWarning}>
+                            Invalid Crededention
+                        </WarnMessage>
                     </InputField>
-                    <Button onClick={signIn}>Log In</Button>
+                    <Button onClick={handleLogin}>Log In</Button>
                 </InputContainer>
                 <ContactLink onClick={handleOpen}>Contact Us</ContactLink>
             </LoginContainer>
