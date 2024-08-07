@@ -268,6 +268,14 @@ export const NetworkPage: React.FC = (prop) => {
         );
     };
 
+    const disconnectNetwork = () => {
+        setActiveNetworkName("");
+    };
+
+    const connectNetwork = (network:string) => {
+        setActiveNetworkName(network);
+    };
+    
     const sortNetworksByStrength = () => {
         setNetworks((prevNetworks) =>
             [...prevNetworks].sort((a, b) => b.strength - a.strength)
@@ -358,6 +366,8 @@ export const NetworkPage: React.FC = (prop) => {
                 isOpen={open}
                 onClose={handleClose}
                 removeNetwork={removeNetwork}
+                disconnectNetwork={disconnectNetwork}
+                connectNetwork = {connectNetwork}
                 type={type}
                 networkName={networkName}
             ></ComfirmModal>
@@ -424,7 +434,9 @@ export const NetworkPage: React.FC = (prop) => {
                                         onClick={() => {
                                             if (item.name === activeNetwork) {
                                                 // Function to disconnect
-                                                handleDisconnect();
+                                                handleOpen();
+                                                setType("Disconnect");
+                                                setNetworkName(item.name);
                                             } else {
                                                 // Function to connect
                                                 handleOpen();
@@ -433,7 +445,9 @@ export const NetworkPage: React.FC = (prop) => {
                                             }
                                         }}
                                         strength={item.strength}
-                                        activateNetwork={item.name === activeNetwork}
+                                        activateNetwork={
+                                            item.name === activeNetwork
+                                        }
                                     >
                                         <ButtonText
                                             activateNetwork={

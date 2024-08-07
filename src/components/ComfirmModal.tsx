@@ -4,6 +4,8 @@ interface ModalProps {
     isOpen: any;
     onClose: any;
     removeNetwork: any;
+    disconnectNetwork: any;
+    connectNetwork: any;
     type?: string;
     networkName?: string;
 }
@@ -67,16 +69,20 @@ const ComfirmModal: React.FC<ModalProps> = ({
     removeNetwork,
     type,
     networkName,
+    disconnectNetwork,
+    connectNetwork,
 }) => {
     if (!isOpen) return null;
 
     const handleAction = () => {
         if (type === "Remove") {
             removeNetwork(networkName);
-            onClose();
         } else if (type === "Connect to") {
-            // Implement logic for connecting a network
+            connectNetwork(networkName);
+        } else if (type === "Disconnect") {
+            disconnectNetwork();
         }
+        onClose();
     };
     return (
         <ModalBackground>
