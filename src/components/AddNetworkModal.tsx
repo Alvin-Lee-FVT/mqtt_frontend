@@ -102,6 +102,9 @@ const AddNetworkModal: React.FC<ModalProps> = ({
     const [ssid, setSsid] = useState("");
     const [password, setPassword] = useState("");
 
+    // Initial loading state
+    const [isloading, setIsloading] = useState(false);
+
     // Initially disabled the button
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [showWarnMessage, setShowWarnMessage] = useState(false);
@@ -122,15 +125,22 @@ const AddNetworkModal: React.FC<ModalProps> = ({
     if (!isOpen) return null;
 
     const handleAdd = () => {
+        setIsloading(true);
+
         const duplicateSsid = networkList.some(
             (ele: { name: any }) => ele.name === ssid
         );
         if (!duplicateSsid) {
-            addNetwork({ name: ssid, strength: 3 });
-            setSsid("");
-            setPassword("");
-            onClose();
+            setTimeout(() => {
+                addNetwork({ name: ssid, strength: 3 });
+                setSsid("");
+                setPassword("");
+                setIsButtonDisabled(true)
+                onClose();
+                setIsloading(false);
+            }, 3000);
         } else {
+            setIsloading(false);
             setShowWarnMessage(true);
         }
     };
@@ -146,52 +156,55 @@ const AddNetworkModal: React.FC<ModalProps> = ({
     return (
         <ModalBackground>
             <ModalContainer>
-                <ModalContent>
-                    <ModalText>
-                        <BoldText>Add Network</BoldText>
-                    </ModalText>
-                    <InputPanel>
-                        <InputContainer>
-                            <InputLabel>SSID</InputLabel>
-                            <input
-                                type="text"
-                                id="input"
-                                onChange={handleSsidChange}
-                                className="Input-text"
-                                placeholder="Network SSID"
-                                required
-                            ></input>
-                            {showWarnMessage && (
-                                <WarnLabel>
-                                    -- (Network SSID already exist) --
-                                </WarnLabel>
-                            )}
-                        </InputContainer>
-                        <InputContainer>
-                            <InputLabel>Password</InputLabel>
-                            <input
-                                type="text"
-                                id="input"
-                                onChange={handlePasswordChange}
-                                className="Input-text"
-                                placeholder="Password"
-                                required
-                            ></input>
-                        </InputContainer>
-                    </InputPanel>
+                {!isloading && (
+                    <ModalContent>
+                        <ModalText>
+                            <BoldText>Add Network</BoldText>
+                        </ModalText>
+                        <InputPanel>
+                            <InputContainer>
+                                <InputLabel>SSID</InputLabel>
+                                <input
+                                    type="text"
+                                    id="input"
+                                    onChange={handleSsidChange}
+                                    className="Input-text"
+                                    placeholder="Network SSID"
+                                    required
+                                ></input>
+                                {showWarnMessage && (
+                                    <WarnLabel>
+                                        -- (Network SSID already exist) --
+                                    </WarnLabel>
+                                )}
+                            </InputContainer>
+                            <InputContainer>
+                                <InputLabel>Password</InputLabel>
+                                <input
+                                    type="text"
+                                    id="input"
+                                    onChange={handlePasswordChange}
+                                    className="Input-text"
+                                    placeholder="Password"
+                                    required
+                                ></input>
+                            </InputContainer>
+                        </InputPanel>
 
-                    <ModalFooter>
-                        <ModalFooterButtons onClick={handleClose}>
-                            Cancel
-                        </ModalFooterButtons>
-                        <ModalFooterButtons
-                            onClick={handleAdd}
-                            disabled={isButtonDisabled}
-                        >
-                            Add
-                        </ModalFooterButtons>
-                    </ModalFooter>
-                </ModalContent>
+                        <ModalFooter>
+                            <ModalFooterButtons onClick={handleClose}>
+                                Cancel
+                            </ModalFooterButtons>
+                            <ModalFooterButtons
+                                onClick={handleAdd}
+                                disabled={isButtonDisabled}
+                            >
+                                Add
+                            </ModalFooterButtons>
+                        </ModalFooter>
+                    </ModalContent>
+                )}
+                {isloading && <div className="connecting"></div>}
             </ModalContainer>
         </ModalBackground>
     );

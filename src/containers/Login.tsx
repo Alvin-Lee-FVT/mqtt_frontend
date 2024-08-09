@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { FvtLogo } from "../assets/FvtLogo";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,6 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `;
-
-
 
 const MainContainer = styled.div`
     display: flex;
@@ -62,14 +60,14 @@ const InputLabel = styled.label`
     margin-bottom: 0.5rem;
 `;
 
-const WarnMessage = styled.div<{ showWarn: boolean }>`
+const WarnMessage = styled.div<{ $showwarn: boolean }>`
     color: red;
-    opacity: ${(props) => (props.showWarn ? 1 : 0)};
+    opacity: ${(props) => (props.$showwarn ? 1 : 0)};
     transition: visibility 0s linear
-            ${(props) => (props.showWarn ? "0s" : "1s")},
+            ${(props) => (props.$showwarn ? "0s" : "1s")},
         opacity 1s ease-in-out;
     ${(props) =>
-        props.showWarn &&
+        props.$showwarn &&
         css`
             animation: ${fadeIn} 1s ease-in-out;
         `}
@@ -115,12 +113,14 @@ const Button = styled.button`
         color: black;
     }
 `;
-export const Login: React.FC = (prop) => {
-    const [open, setOpen] = React.useState(false);
-    const [username, setUsername] = React.useState("");
-    const [password, setPassword] = React.useState("");
 
-    const [showWarning, setShowWarning] = React.useState(false);
+
+export const Login: React.FC = () => {
+    const [open, setOpen] = useState(false);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [showWarning, setShowWarning] = useState(false);
 
     const { login } = useAuth();
 
@@ -133,10 +133,6 @@ export const Login: React.FC = (prop) => {
     };
 
     const navigate = useNavigate();
-
-    const signIn = () => {
-        navigate("/loading");
-    };
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault(); // Prevents the default form submission behavior
@@ -169,7 +165,7 @@ export const Login: React.FC = (prop) => {
                             placeholder="Username"
                             value={username}
                             onChange={(e) => {
-                                setUsername(e.target.value);
+                                setUsername(e.target.value.replace(/\s/g, ''));
                                 setShowWarning(false);
                             }}
                         ></Input>
@@ -180,14 +176,14 @@ export const Login: React.FC = (prop) => {
                         <Input
                             id="password"
                             type="password"
-                            placeholder="******************"
+                            placeholder="Enter Password"
                             value={password}
                             onChange={(e) => {
-                                setPassword(e.target.value);
+                                setPassword(e.target.value.replace(/\s/g, ''));
                                 setShowWarning(false);
                             }}
                         ></Input>
-                        <WarnMessage showWarn={showWarning}>
+                        <WarnMessage $showwarn={showWarning}>
                             Invalid Crededention
                         </WarnMessage>
                     </InputField>

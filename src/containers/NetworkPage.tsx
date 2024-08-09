@@ -26,7 +26,7 @@ const verticalAnimation = keyframes`
     top: 120px;
   }
   to {
-    top: 30px;
+    top: 40px;
   }
 `;
 
@@ -38,6 +38,7 @@ const MainContainer = styled.div`
 `;
 
 const HeaderContainer = styled.div`
+    margin-top: 15px;
     height: 100px;
     padding: 8px;
     display: flex;
@@ -97,7 +98,7 @@ const MainPanel = styled.div`
     width: 100%;
     height: 50%;
     flex: 1;
-    padding: 30px 16px 60px 16px;
+    padding: 30px 16px 44px 16px;
     align-items: stretch;
     display: flex;
     opacity: 0;
@@ -154,7 +155,7 @@ const ListItem = styled.div`
 `;
 
 const NetworkList = styled.div`
-    height: 80%;
+    height: 620px;
     overflow-y: auto; /* Only vertical scrolling */
     background-color: #656363;
 `;
@@ -176,10 +177,10 @@ const NetworkName = styled.div<{ strength: number }>`
 
 const ConnectButton = styled.button<{
     strength: number;
-    activateNetwork: boolean;
+    $activateNetwork: boolean;
 }>`
     background-color: ${(props) =>
-        props.activateNetwork ? "#868686" : "#444444"};
+        props.$activateNetwork ? "#868686" : "#444444"};
     border-width: 2.3px;
     border-color: #000000;
     box-shadow: inset 0px -2px 0px 0px #333333;
@@ -200,16 +201,16 @@ const AddNetworkButton = styled.button`
     width: 180px;
     display: flex;
     cursor: pointer;
-    height: 50%;
+    height: 70%;
 `;
 
 const ButtonText = styled.div<{
-    activateNetwork?: boolean;
+    $activateNetwork?: boolean;
 }>`
     font-weight: 700;
     font-size: 18px;
     line-height: 16px;
-    color: ${(props) => (props.activateNetwork ? "black" : "#ffffff")};
+    color: ${(props) => (props.$activateNetwork ? "black" : "#ffffff")};
     margin: auto;
 `;
 
@@ -279,15 +280,17 @@ export const NetworkPage: React.FC = (prop) => {
         setActiveNetworkName(network);
     };
 
-    const sortNetworksByStrength = () => {
-        setNetworks((prevNetworks) =>
-            [...prevNetworks].sort((a, b) => b.strength - a.strength)
-        );
-    };
-
     useEffect(() => {
-        sortNetworksByStrength();
+        console.log(2222);
+        const sortedNetworks = [...networks].sort(
+            (a, b) => b.strength - a.strength
+        );
+        // Only update state if the networks array is actually different after sorting
+        if (JSON.stringify(sortedNetworks) !== JSON.stringify(networks)) {
+            setNetworks(sortedNetworks);
+        }
     }, [networks]);
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -424,8 +427,8 @@ export const NetworkPage: React.FC = (prop) => {
                 <NetworkContainer>
                     <ListTitle>Network</ListTitle>
                     <NetworkList>
-                        {networks.map((item, index) => (
-                            <ListItem>
+                        {networks.map((item) => (
+                            <ListItem key={item.name}>
                                 <NetworkInfoContainer>
                                     {item.strength > 0 && (
                                         <Wifi
@@ -454,12 +457,12 @@ export const NetworkPage: React.FC = (prop) => {
                                             }
                                         }}
                                         strength={item.strength}
-                                        activateNetwork={
+                                        $activateNetwork={
                                             item.name === activeNetwork
                                         }
                                     >
                                         <ButtonText
-                                            activateNetwork={
+                                            $activateNetwork={
                                                 item.name === activeNetwork
                                             }
                                         >

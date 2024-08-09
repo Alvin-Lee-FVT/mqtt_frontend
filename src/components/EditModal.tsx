@@ -73,8 +73,8 @@ const ModalFooter = styled.div`
     justify-content: space-around;
 `;
 
-const ModalFooterButtons = styled.div`
-    background-color: #797979;
+const ModalFooterButtons = styled.button<{ primary?: boolean }>`
+    background-color: ${({ primary }) => (primary ? "#797979" : "#949393")};
     border-width: 2.3px;
     border-color: #000000;
     box-shadow: inset 0px -2px 0px 0px #333333;
@@ -234,7 +234,7 @@ const EditModal: React.FC<ModalProps> = ({
                         <ModalFooterButtons onClick={handleClose}>
                             Cancel
                         </ModalFooterButtons>
-                        <ModalFooterButtons onClick={handleUpdate}>
+                        <ModalFooterButtons onClick={handleUpdate} primary>
                             Update
                         </ModalFooterButtons>
                     </ModalFooter>
