@@ -114,8 +114,9 @@ const Button = styled.button`
     }
 `;
 
-
 export const Login: React.FC = () => {
+    const [admin, setAdmin] = useState(false);
+
     const [open, setOpen] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -139,7 +140,11 @@ export const Login: React.FC = () => {
 
         // Add authentication logic here
         if (username === "user" && password === "pass") {
-            login();
+            login("user");
+            setAdmin(true)
+            navigate("/network");
+        } else if (username === "admin" && password === "pass") {
+            login("admin");
             navigate("/network");
         } else {
             setShowWarning(true);
@@ -165,7 +170,7 @@ export const Login: React.FC = () => {
                             placeholder="Username"
                             value={username}
                             onChange={(e) => {
-                                setUsername(e.target.value.replace(/\s/g, ''));
+                                setUsername(e.target.value.replace(/\s/g, ""));
                                 setShowWarning(false);
                             }}
                         ></Input>
@@ -179,7 +184,7 @@ export const Login: React.FC = () => {
                             placeholder="Enter Password"
                             value={password}
                             onChange={(e) => {
-                                setPassword(e.target.value.replace(/\s/g, ''));
+                                setPassword(e.target.value.replace(/\s/g, ""));
                                 setShowWarning(false);
                             }}
                         ></Input>

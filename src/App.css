@@ -13,6 +13,12 @@ body {
     font-size: 16px;
 }
 
+/* Target the placeholder text */
+input::placeholder {
+    color: #c2c2c2; /* Change the placeholder text color */
+    font-style: italic;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 32px;

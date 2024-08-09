@@ -5,10 +5,12 @@ import { Wifi } from "../assets/Wifi";
 import { NoWifi } from "../assets/NoWifi";
 import Delete from "../assets/delete.svg";
 import Edit from "../assets/edit.svg";
+import Info from "../assets/info.svg";
 
 import ComfirmModal from "../components/ComfirmModal";
 import EditModal from "../components/EditModal";
 import AddNetworkModal from "../components/AddNetworkModal";
+import { useAuth } from "../components/AuthContext";
 
 // Define keyframes for fade-in animation
 const fadeInAnimation = keyframes`
@@ -86,7 +88,7 @@ const SerialNum = styled.div`
     font-size: 25px;
     justify-content: center;
     align-items: center;
-    margin-right: 15px;
+    margin-right: 5px;
 `;
 
 const TimeInfo = styled.div`
@@ -228,11 +230,16 @@ const DeleteButton = styled.button`
     }
 `;
 
-const EditButton = styled.button`
+const EditButton = styled.button<{ role?: string | null }>`
     padding: 12px;
     width: 40px;
     height: 40px;
-    background: url(${Edit}) no-repeat center;
+    background: url(${(props) => {
+            if (props.role === "admin") return Edit;
+            if (props.role === "user") return Info;
+            return Edit;
+        }})
+        no-repeat center;
 `;
 
 export const NetworkPage: React.FC = (prop) => {
@@ -247,6 +254,8 @@ export const NetworkPage: React.FC = (prop) => {
     const [type, setType] = React.useState("");
     const [networkName, setNetworkName] = React.useState("");
     const [activeNetwork, setActiveNetworkName] = React.useState("");
+
+    const { auth, logout } = useAuth();
 
     const [networks, setNetworks] = useState([
         { name: "TELUS86523-5G", strength: 3 },
@@ -403,6 +412,7 @@ export const NetworkPage: React.FC = (prop) => {
                             onClick={() => {
                                 handleEditOpen();
                             }}
+                            role={auth.role}
                         ></EditButton>
                     </div>
                 </BatteryInfo>

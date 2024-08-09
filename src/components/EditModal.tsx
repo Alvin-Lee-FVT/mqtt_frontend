@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useAuth } from "./AuthContext";
 interface ModalProps {
     isOpen: any;
     onClose: any;
@@ -126,6 +127,8 @@ const EditModal: React.FC<ModalProps> = ({
         onClose();
     };
 
+    const { auth } = useAuth();
+
     if (!isOpen) return null;
 
     return (
@@ -144,9 +147,10 @@ const EditModal: React.FC<ModalProps> = ({
                                 name="batterySerial"
                                 className="Input-text"
                                 onChange={handleChange}
-                                placeholder="VPY-1111"
+                                placeholder="Ex.VPY-1111"
                                 value={mqttConfig.batterySerial}
                                 autoComplete="off"
+                                disabled={auth.role === "user"}
                             ></input>
                         </InputContainer>
                         <InputContainer>
@@ -157,8 +161,9 @@ const EditModal: React.FC<ModalProps> = ({
                                 name="type"
                                 className="Input-text"
                                 onChange={handleChange}
-                                placeholder="B4ST"
+                                placeholder="Ex.B4ST"
                                 autoComplete="off"
+                                disabled={auth.role === "user"}
                             ></input>
                         </InputContainer>
                         <Divider></Divider>
@@ -172,8 +177,9 @@ const EditModal: React.FC<ModalProps> = ({
                                     type="text"
                                     id="input"
                                     className="Input-text"
-                                    placeholder="127.0.0.1"
+                                    placeholder="Ex.127.0.0.1"
                                     autoComplete="off"
+                                    disabled={auth.role === "user"}
                                 ></input>
                             </InputContainer>
                             <InputContainer id="w-35">
@@ -182,8 +188,9 @@ const EditModal: React.FC<ModalProps> = ({
                                     type="text"
                                     id="input"
                                     className="Input-text"
-                                    placeholder="1883"
+                                    placeholder="Ex.1883"
                                     autoComplete="off"
+                                    disabled={auth.role === "user"}
                                 ></input>
                             </InputContainer>
                         </InputGroup>
@@ -194,8 +201,9 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="sparkplugb_docker_app"
+                                placeholder="Ex.sparkplugb_docker_app"
                                 autoComplete="off"
+                                disabled={auth.role === "user"}
                             ></input>
                         </InputContainer>
                         <InputContainer>
@@ -204,8 +212,9 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="EESVAN"
+                                placeholder="Ex.EESVAN"
                                 autoComplete="off"
+                                disabled={auth.role === "user"}
                             ></input>
                         </InputContainer>
                         <InputContainer>
@@ -214,8 +223,9 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="Ees12345"
+                                placeholder="Ex.Ees12345"
                                 autoComplete="off"
+                                disabled={auth.role === "user"}
                             ></input>
                         </InputContainer>
                         <InputContainer>
@@ -224,8 +234,9 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="1500"
+                                placeholder="Ex.1500"
                                 autoComplete="off"
+                                disabled={auth.role === "user"}
                             ></input>
                         </InputContainer>
                     </InputPanel>
@@ -234,9 +245,9 @@ const EditModal: React.FC<ModalProps> = ({
                         <ModalFooterButtons onClick={handleClose}>
                             Cancel
                         </ModalFooterButtons>
-                        <ModalFooterButtons onClick={handleUpdate} primary>
+                        {auth.role === "admin" && <ModalFooterButtons onClick={handleUpdate} primary>
                             Update
-                        </ModalFooterButtons>
+                        </ModalFooterButtons>}
                     </ModalFooter>
                 </ModalContent>
             </ModalContainer>
