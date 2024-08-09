@@ -144,7 +144,7 @@ const EditModal: React.FC<ModalProps> = ({
                                 name="batterySerial"
                                 className="Input-text"
                                 onChange={handleChange}
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="VPY-1111"
                                 value={mqttConfig.batterySerial}
                                 autoComplete="off"
                             ></input>
@@ -157,7 +157,7 @@ const EditModal: React.FC<ModalProps> = ({
                                 name="type"
                                 className="Input-text"
                                 onChange={handleChange}
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="B4ST"
                                 autoComplete="off"
                             ></input>
                         </InputContainer>
@@ -172,7 +172,7 @@ const EditModal: React.FC<ModalProps> = ({
                                     type="text"
                                     id="input"
                                     className="Input-text"
-                                    placeholder="xxxxxxxxxxxxxxxxxxx"
+                                    placeholder="127.0.0.1"
                                     autoComplete="off"
                                 ></input>
                             </InputContainer>
@@ -182,7 +182,7 @@ const EditModal: React.FC<ModalProps> = ({
                                     type="text"
                                     id="input"
                                     className="Input-text"
-                                    placeholder="8080"
+                                    placeholder="1883"
                                     autoComplete="off"
                                 ></input>
                             </InputContainer>
@@ -194,7 +194,7 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="sparkplugb_docker_app"
                                 autoComplete="off"
                             ></input>
                         </InputContainer>
@@ -204,7 +204,7 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="EESVAN"
                                 autoComplete="off"
                             ></input>
                         </InputContainer>
@@ -214,7 +214,7 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="Ees12345"
                                 autoComplete="off"
                             ></input>
                         </InputContainer>
@@ -224,7 +224,7 @@ const EditModal: React.FC<ModalProps> = ({
                                 type="text"
                                 id="input"
                                 className="Input-text"
-                                placeholder="xxxxxxxxxxxxxxxxxxx"
+                                placeholder="1500"
                                 autoComplete="off"
                             ></input>
                         </InputContainer>

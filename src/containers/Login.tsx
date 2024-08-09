@@ -17,17 +17,7 @@ const fadeIn = keyframes`
   }
 `;
 
-// Define the keyframes for the animation
-const stretch = keyframes`
-  0% {
-    width: 0px;
-    height: 460px;
-  }
-  100% {
-    width: 700px;
-    height: 460px;
-  }
-`;
+
 
 const MainContainer = styled.div`
     display: flex;
@@ -75,7 +65,6 @@ const InputLabel = styled.label`
 const WarnMessage = styled.div<{ showWarn: boolean }>`
     color: red;
     opacity: ${(props) => (props.showWarn ? 1 : 0)};
-    visibility: ${(props) => (props.showWarn ? "visible" : "hidden")};
     transition: visibility 0s linear
             ${(props) => (props.showWarn ? "0s" : "1s")},
         opacity 1s ease-in-out;

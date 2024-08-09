@@ -221,6 +221,10 @@ const DeleteButton = styled.button`
     margin-left: 45px;
     width: 50px;
     background: url(${Delete}) #696969 no-repeat center;
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
 `;
 
 const EditButton = styled.button`
@@ -241,8 +245,7 @@ export const NetworkPage: React.FC = (prop) => {
 
     const [type, setType] = React.useState("");
     const [networkName, setNetworkName] = React.useState("");
-    const [activeNetwork, setActiveNetworkName] =
-        React.useState("TELUS86523-5G");
+    const [activeNetwork, setActiveNetworkName] = React.useState("");
 
     const [networks, setNetworks] = useState([
         { name: "TELUS86523-5G", strength: 3 },
@@ -272,10 +275,10 @@ export const NetworkPage: React.FC = (prop) => {
         setActiveNetworkName("");
     };
 
-    const connectNetwork = (network:string) => {
+    const connectNetwork = (network: string) => {
         setActiveNetworkName(network);
     };
-    
+
     const sortNetworksByStrength = () => {
         setNetworks((prevNetworks) =>
             [...prevNetworks].sort((a, b) => b.strength - a.strength)
@@ -367,7 +370,7 @@ export const NetworkPage: React.FC = (prop) => {
                 onClose={handleClose}
                 removeNetwork={removeNetwork}
                 disconnectNetwork={disconnectNetwork}
-                connectNetwork = {connectNetwork}
+                connectNetwork={connectNetwork}
                 type={type}
                 networkName={networkName}
             ></ComfirmModal>
@@ -401,7 +404,17 @@ export const NetworkPage: React.FC = (prop) => {
                     </div>
                 </BatteryInfo>
                 <SystemInfo>
-                    <Wifi fill="white" strength={2}></Wifi>
+                    {activeNetwork && (
+                        <Wifi
+                            fill="white"
+                            strength={
+                                networks.find(
+                                    (obj) => obj.name === activeNetwork
+                                )?.strength
+                            }
+                        ></Wifi>
+                    )}
+                    {!activeNetwork && <NoWifi fill="white"></NoWifi>}
                     <TimeInfo>
                         {currentDate} &nbsp; {currentTime}
                     </TimeInfo>
@@ -420,11 +433,7 @@ export const NetworkPage: React.FC = (prop) => {
                                             strength={item.strength}
                                         ></Wifi>
                                     )}
-                                    {item.strength === 0 && (
-                                        <NoWifi
-                                            strength={item.strength}
-                                        ></NoWifi>
-                                    )}
+                                    {item.strength === 0 && <NoWifi></NoWifi>}
                                     <NetworkName strength={item.strength}>
                                         {item.name}
                                     </NetworkName>

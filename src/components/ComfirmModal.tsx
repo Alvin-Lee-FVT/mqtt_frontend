@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import styled, { css, keyframes } from "styled-components";
 interface ModalProps {
     isOpen: any;
     onClose: any;
@@ -19,12 +19,13 @@ const ModalBackground = styled.div`
     z-index: 5;
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.div<{ show: boolean }>`
     background: rgb(139 139 139);
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 25px;
-    width: 50%;
+    width: 650px;
+    height: 260px;
     margin: auto;
     border: 2px solid black;
     border-radius: 10px;
@@ -72,35 +73,46 @@ const ComfirmModal: React.FC<ModalProps> = ({
     disconnectNetwork,
     connectNetwork,
 }) => {
+    const [isloading, setIsloading] = useState(false);
     if (!isOpen) return null;
 
     const handleAction = () => {
-        if (type === "Remove") {
-            removeNetwork(networkName);
-        } else if (type === "Connect to") {
-            connectNetwork(networkName);
-        } else if (type === "Disconnect") {
-            disconnectNetwork();
-        }
-        onClose();
+        setIsloading(true);
+
+        setTimeout(() => {
+            if (type === "Remove") {
+                removeNetwork(networkName);
+            } else if (type === "Connect to") {
+                connectNetwork(networkName);
+            } else if (type === "Disconnect") {
+                disconnectNetwork();
+            }
+            setIsloading(false);
+            onClose();
+        }, 3000);
     };
+
     return (
         <ModalBackground>
-            <ModalContainer>
-                <ModalContent>
-                    <ModalText>
-                        Do you want to <BoldText>{type}</BoldText> the network
-                        <BoldText> {networkName}</BoldText>?
-                    </ModalText>
-                    <ModalFooter>
-                        <ModalFooterButtons onClick={onClose}>
-                            No
-                        </ModalFooterButtons>
-                        <ModalFooterButtons onClick={handleAction}>
-                            Yes
-                        </ModalFooterButtons>
-                    </ModalFooter>
-                </ModalContent>
+            <ModalContainer show={isOpen}>
+                {!isloading && (
+                    <ModalContent>
+                        <ModalText>
+                            Do you want to <BoldText>{type}</BoldText> the
+                            network
+                            <BoldText> {networkName}</BoldText>?
+                        </ModalText>
+                        <ModalFooter>
+                            <ModalFooterButtons onClick={onClose}>
+                                No
+                            </ModalFooterButtons>
+                            <ModalFooterButtons onClick={handleAction}>
+                                Yes
+                            </ModalFooterButtons>
+                        </ModalFooter>
+                    </ModalContent>
+                )}
+                {isloading && <div className="loader"></div>}
             </ModalContainer>
         </ModalBackground>
     );

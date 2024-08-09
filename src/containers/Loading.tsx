@@ -62,16 +62,6 @@ const Spinner = styled.div`
     animation: spin 2s 1s linear infinite;
 `;
 
-const VersionInfo = styled.div`
-    color: #bcb7b2;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: normal;
-    opacity: 0;
-    animation: ${fadeIn} 2s 1s ease-in-out forwards;
-`;
-
 export const Loading: React.FC<LoadingProps> = (prop) => {
     return (
         <MainContainer>
