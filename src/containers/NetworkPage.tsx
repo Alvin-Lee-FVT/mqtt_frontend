@@ -293,11 +293,23 @@ export const NetworkPage: React.FC = (prop) => {
         const sortedNetworks = [...networks].sort(
             (a, b) => b.strength - a.strength
         );
+
+        if (activeNetwork) {
+            // Find the index of the active network
+            const activeNetworkIndex = sortedNetworks.findIndex(
+                (netWork) => netWork.name === activeNetwork
+            );
+            // Remove the object from its current position
+            const [network] = sortedNetworks.splice(activeNetworkIndex, 1);
+
+            // Insert the network at the beginning of the network list
+            sortedNetworks.unshift(network);
+        }
         // Only update state if the networks array is actually different after sorting
         if (JSON.stringify(sortedNetworks) !== JSON.stringify(networks)) {
             setNetworks(sortedNetworks);
         }
-    }, [networks]);
+    }, [networks, activeNetwork]);
 
     const handleClose = () => {
         setOpen(false);
