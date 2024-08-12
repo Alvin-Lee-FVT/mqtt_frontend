@@ -25,7 +25,7 @@ const fadeInAnimation = keyframes`
 // Define keyframes for fade-in animation
 const verticalAnimation = keyframes`
   from {
-    top: 120px;
+    top: 200px;
   }
   to {
     top: 40px;
@@ -50,11 +50,12 @@ const HeaderContainer = styled.div`
 `;
 
 const LogoContainer = styled.div`
+    left: 0;
+    right: 0;
     position: absolute;
-    width: 100%;
     animation: ${verticalAnimation} 1s ease-in-out forwards;
-    justify-content: center;
     display: flex;
+    justify-content: center;
 `;
 
 const SystemInfo = styled.div`

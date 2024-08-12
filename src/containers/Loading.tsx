@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled, { keyframes, ThemeContext } from "styled-components";
 import { FvtLogo } from "../assets/FvtLogo";
+import { useNavigate } from "react-router-dom";
 
 type LoadingProps = {
     devVersion?: string;
@@ -38,7 +39,6 @@ const MainContainer = styled.div`
 `;
 
 const LogoContainer = styled.div`
-    transform: scale(1.3);
     display: flex;
     justify-content: center;
     position: absolute;
@@ -63,6 +63,13 @@ const Spinner = styled.div`
 `;
 
 export const Loading: React.FC<LoadingProps> = (prop) => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setTimeout(() => {
+            navigate("/network");
+        }, 5000);
+    }, []); // Empty dependency array means it runs only on mount
     return (
         <MainContainer>
             <LogoContainer>

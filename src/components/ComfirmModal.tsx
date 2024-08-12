@@ -74,11 +74,11 @@ const ComfirmModal: React.FC<ModalProps> = ({
     connectNetwork,
 }) => {
     // Initial loading state
-    const [isloading, setIsloading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     if (!isOpen) return null;
 
     const handleAction = () => {
-        setIsloading(true);
+        setIsLoading(true);
 
         setTimeout(() => {
             if (type === "Remove") {
@@ -88,7 +88,7 @@ const ComfirmModal: React.FC<ModalProps> = ({
             } else if (type === "Disconnect") {
                 disconnectNetwork();
             }
-            setIsloading(false);
+            setIsLoading(false);
             onClose();
         }, 3000);
     };
@@ -96,7 +96,7 @@ const ComfirmModal: React.FC<ModalProps> = ({
     return (
         <ModalBackground>
             <ModalContainer show={isOpen}>
-                {!isloading && (
+                {!isLoading && (
                     <ModalContent>
                         <ModalText>
                             Do you want to <BoldText>{type}</BoldText> the
@@ -113,7 +113,7 @@ const ComfirmModal: React.FC<ModalProps> = ({
                         </ModalFooter>
                     </ModalContent>
                 )}
-                {isloading && <div className="loader"></div>}
+                {isLoading && <div className="loader"></div>}
             </ModalContainer>
         </ModalBackground>
     );

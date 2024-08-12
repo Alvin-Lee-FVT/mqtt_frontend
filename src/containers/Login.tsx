@@ -142,10 +142,10 @@ export const Login: React.FC = () => {
         if (username === "user" && password === "pass") {
             login("user");
             setAdmin(true);
-            navigate("/network");
+            navigate("/loading");
         } else if (username === "admin" && password === "pass") {
             login("admin");
-            navigate("/network");
+            navigate("/loading");
         } else {
             setShowWarning(true);
         }
