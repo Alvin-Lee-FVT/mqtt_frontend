@@ -256,8 +256,8 @@ const EditModal: React.FC<ModalProps> = ({
                     </InputPanel>
 
                     <ModalFooter>
-                        <ModalFooterButtons onClick={handleClose}>
-                            Cancel
+                        <ModalFooterButtons onClick={handleClose} primary={auth.role === "user"}>
+                            {auth.role === "user" ? "Close" : "Cancel"}
                         </ModalFooterButtons>
                         {auth.role === "admin" && (
                             <ModalFooterButtons onClick={handleUpdate} primary>
