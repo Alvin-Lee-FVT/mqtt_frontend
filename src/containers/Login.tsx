@@ -189,7 +189,7 @@ export const Login: React.FC = () => {
                             }}
                         ></Input>
                         <WarnMessage $showwarn={showWarning}>
-                            Invalid Crededention
+                            Invalid Credential
                         </WarnMessage>
                     </InputField>
                     <Button onClick={handleLogin}>Log In</Button>

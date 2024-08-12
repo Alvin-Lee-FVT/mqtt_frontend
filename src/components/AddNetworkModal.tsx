@@ -113,12 +113,12 @@ const AddNetworkModal: React.FC<ModalProps> = ({
 
     const handleSsidChange = (event: any) => {
         setShowWarnMessage(false);
-        setSsid(event.target.value);
+        setSsid(event.target.value.replace(/\s/g, ""));
         setIsButtonDisabled(event.target.value === "" || password === "");
     };
 
     const handlePasswordChange = (event: any) => {
-        setPassword(event.target.value);
+        setPassword(event.target.value.replace(/\s/g, ""));
         setIsButtonDisabled(ssid === "" || event.target.value === "");
     };
 
@@ -167,6 +167,7 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                                 <input
                                     type="text"
                                     id="input"
+                                    value={ssid}
                                     onChange={handleSsidChange}
                                     className="Input-text"
                                     placeholder="Network SSID"
@@ -183,6 +184,7 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                                 <input
                                     type="text"
                                     id="input"
+                                    value={password}
                                     onChange={handlePasswordChange}
                                     className="Input-text"
                                     placeholder="Password"

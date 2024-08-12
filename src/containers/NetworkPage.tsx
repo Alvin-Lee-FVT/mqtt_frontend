@@ -290,7 +290,6 @@ export const NetworkPage: React.FC = (prop) => {
     };
 
     useEffect(() => {
-        console.log(2222);
         const sortedNetworks = [...networks].sort(
             (a, b) => b.strength - a.strength
         );

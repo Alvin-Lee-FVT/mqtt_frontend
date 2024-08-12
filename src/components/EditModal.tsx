@@ -147,7 +147,9 @@ const EditModal: React.FC<ModalProps> = ({
                                 name="batterySerial"
                                 className="Input-text"
                                 onChange={handleChange}
-                                placeholder="Ex.VPY-1111"
+                                placeholder={
+                                    auth.role === "admin" ? "Ex.VPY-1111" : "-"
+                                }
                                 value={mqttConfig.batterySerial}
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
@@ -161,7 +163,9 @@ const EditModal: React.FC<ModalProps> = ({
                                 name="type"
                                 className="Input-text"
                                 onChange={handleChange}
-                                placeholder="Ex.B4ST"
+                                placeholder={
+                                    auth.role === "admin" ? "Ex.B4ST" : "-"
+                                }
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
                             ></input>
@@ -245,9 +249,11 @@ const EditModal: React.FC<ModalProps> = ({
                         <ModalFooterButtons onClick={handleClose}>
                             Cancel
                         </ModalFooterButtons>
-                        {auth.role === "admin" && <ModalFooterButtons onClick={handleUpdate} primary>
-                            Update
-                        </ModalFooterButtons>}
+                        {auth.role === "admin" && (
+                            <ModalFooterButtons onClick={handleUpdate} primary>
+                                Update
+                            </ModalFooterButtons>
+                        )}
                     </ModalFooter>
                 </ModalContent>
             </ModalContainer>
