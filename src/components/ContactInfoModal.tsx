@@ -66,6 +66,12 @@ const InfoText = styled.span`
     color: #494949;
     margin-bottom: 25px;
 `;
+
+const SecondaryInfoText = styled.span`
+    text-wrap: nowrap;
+    color: #494949;
+    margin-bottom: 5px;
+`;
 const ContactInfoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
@@ -75,9 +81,12 @@ const ContactInfoModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 <ModalContent>
                     <ModalText>
                         <InfoTitle>PHONE</InfoTitle>
-                        <InfoText>+1 778-000-0000</InfoText>
+                        <InfoText>+1 (604) 465-0529</InfoText>
                         <InfoTitle>E-MAIL</InfoTitle>
-                        <InfoText>Epiroc@epiroc.com</InfoText>
+                        <InfoText>fvt-office@epiroc.com</InfoText>
+                        <InfoTitle>HOURS</InfoTitle>
+                        <SecondaryInfoText>Monday to Friday</SecondaryInfoText>
+                        <InfoText>9AM - 4PM (PST)</InfoText>
                     </ModalText>
                     <ModalFooter>
                         <ModalFooterButtons onClick={onClose}>
