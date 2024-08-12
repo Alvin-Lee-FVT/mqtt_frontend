@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { TextInput } from '../style/InputStyles';
+
 interface ModalProps {
     isOpen: any;
     onClose: any;
@@ -135,7 +137,7 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                 addNetwork({ name: ssid, strength: 3 });
                 setSsid("");
                 setPassword("");
-                setIsButtonDisabled(true)
+                setIsButtonDisabled(true);
                 onClose();
                 setIsloading(false);
             }, 3000);
@@ -164,15 +166,14 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                         <InputPanel>
                             <InputContainer>
                                 <InputLabel>SSID</InputLabel>
-                                <input
+                                <TextInput
                                     type="text"
-                                    id="input"
+                                    id="ssid"
                                     value={ssid}
                                     onChange={handleSsidChange}
-                                    className="Input-text"
+                                    autoComplete="off"
                                     placeholder="Network SSID"
-                                    required
-                                ></input>
+                                ></TextInput>
                                 {showWarnMessage && (
                                     <WarnLabel>
                                         -- (Network SSID already exist) --
@@ -181,15 +182,14 @@ const AddNetworkModal: React.FC<ModalProps> = ({
                             </InputContainer>
                             <InputContainer>
                                 <InputLabel>Password</InputLabel>
-                                <input
+                                <TextInput
                                     type="text"
-                                    id="input"
+                                    id="password"
                                     value={password}
                                     onChange={handlePasswordChange}
-                                    className="Input-text"
+                                    autoComplete="off"
                                     placeholder="Password"
-                                    required
-                                ></input>
+                                ></TextInput>
                             </InputContainer>
                         </InputPanel>
 

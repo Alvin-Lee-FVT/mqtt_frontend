@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useAuth } from "./AuthContext";
+import { TextInput } from "../style/InputStyles";
+
 interface ModalProps {
     isOpen: any;
     onClose: any;
@@ -141,11 +143,10 @@ const EditModal: React.FC<ModalProps> = ({
                         </ModalText>
                         <InputContainer>
                             <InputLabel>Battery serial Number</InputLabel>
-                            <input
+                            <TextInput
                                 type="text"
-                                id="input"
+                                id="battery-serial"
                                 name="batterySerial"
-                                className="Input-text"
                                 onChange={handleChange}
                                 placeholder={
                                     auth.role === "admin" ? "Ex.VPY-1111" : "-"
@@ -153,22 +154,21 @@ const EditModal: React.FC<ModalProps> = ({
                                 value={mqttConfig.batterySerial}
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
-                            ></input>
+                            ></TextInput>
                         </InputContainer>
                         <InputContainer>
                             <InputLabel>Type</InputLabel>
-                            <input
+                            <TextInput
                                 type="text"
-                                id="input"
+                                id="type"
                                 name="type"
-                                className="Input-text"
                                 onChange={handleChange}
                                 placeholder={
                                     auth.role === "admin" ? "Ex.B4ST" : "-"
                                 }
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
-                            ></input>
+                            ></TextInput>
                         </InputContainer>
                         <Divider></Divider>
                         <ModalText>
@@ -177,71 +177,81 @@ const EditModal: React.FC<ModalProps> = ({
                         <InputGroup>
                             <InputContainer id="w-60">
                                 <InputLabel>Endpoint</InputLabel>
-                                <input
+                                <TextInput
                                     type="text"
-                                    id="input"
-                                    className="Input-text"
-                                    placeholder="Ex.127.0.0.1"
+                                    id="endpoint"
+                                    placeholder={
+                                        auth.role === "admin"
+                                            ? "Ex.127.0.0.1"
+                                            : "-"
+                                    }
                                     autoComplete="off"
                                     disabled={auth.role === "user"}
-                                ></input>
+                                ></TextInput>
                             </InputContainer>
                             <InputContainer id="w-35">
                                 <InputLabel>Port</InputLabel>
-                                <input
+                                <TextInput
                                     type="text"
-                                    id="input"
-                                    className="Input-text"
-                                    placeholder="Ex.1883"
+                                    id="port"
+                                    placeholder={
+                                        auth.role === "admin" ? "Ex.1883" : "-"
+                                    }
                                     autoComplete="off"
                                     disabled={auth.role === "user"}
-                                ></input>
+                                ></TextInput>
                             </InputContainer>
                         </InputGroup>
 
                         <InputContainer>
                             <InputLabel>Client ID</InputLabel>
-                            <input
+                            <TextInput
                                 type="text"
-                                id="input"
-                                className="Input-text"
-                                placeholder="Ex.sparkplugb_docker_app"
+                                id="clientId"
+                                placeholder={
+                                    auth.role === "admin"
+                                        ? "Ex.sparkplugb_docker_app"
+                                        : "-"
+                                }
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
-                            ></input>
+                            ></TextInput>
                         </InputContainer>
                         <InputContainer>
                             <InputLabel>Username</InputLabel>
-                            <input
+                            <TextInput
                                 type="text"
-                                id="input"
-                                className="Input-text"
-                                placeholder="Ex.EESVAN"
+                                id="userName"
+                                placeholder={
+                                    auth.role === "admin" ? "Ex.EESVAN" : "-"
+                                }
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
-                            ></input>
+                            ></TextInput>
                         </InputContainer>
                         <InputContainer>
                             <InputLabel>Password</InputLabel>
-                            <input
+                            <TextInput
                                 type="text"
-                                id="input"
-                                className="Input-text"
-                                placeholder="Ex.Ees12345"
+                                id="password"
+                                placeholder={
+                                    auth.role === "admin" ? "Ex.Ees12345" : "-"
+                                }
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
-                            ></input>
+                            ></TextInput>
                         </InputContainer>
                         <InputContainer>
                             <InputLabel>Publish Period</InputLabel>
-                            <input
+                            <TextInput
                                 type="text"
-                                id="input"
-                                className="Input-text"
-                                placeholder="Ex.1500"
+                                id="period"
+                                placeholder={
+                                    auth.role === "admin" ? "Ex.1500" : "-"
+                                }
                                 autoComplete="off"
                                 disabled={auth.role === "user"}
-                            ></input>
+                            ></TextInput>
                         </InputContainer>
                     </InputPanel>
 

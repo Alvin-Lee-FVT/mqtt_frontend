@@ -141,7 +141,7 @@ export const Login: React.FC = () => {
         // Add authentication logic here
         if (username === "user" && password === "pass") {
             login("user");
-            setAdmin(true)
+            setAdmin(true);
             navigate("/network");
         } else if (username === "admin" && password === "pass") {
             login("admin");
@@ -169,6 +169,7 @@ export const Login: React.FC = () => {
                             type="text"
                             placeholder="Username"
                             value={username}
+                            autoComplete="off"
                             onChange={(e) => {
                                 setUsername(e.target.value.replace(/\s/g, ""));
                                 setShowWarning(false);
@@ -183,6 +184,7 @@ export const Login: React.FC = () => {
                             type="password"
                             placeholder="Enter Password"
                             value={password}
+                            autoComplete="off"
                             onChange={(e) => {
                                 setPassword(e.target.value.replace(/\s/g, ""));
                                 setShowWarning(false);
